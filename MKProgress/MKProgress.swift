@@ -37,14 +37,39 @@ public final class MKProgress {
     /// Creating `UIWindow` to present Progress HUD
     /// 'MKProgressViewController' initialization and settting as rootViewController for the window.
     /// Returns 'UIWindow'.
+//    fileprivate func getHUDWindow() -> UIWindow {
+//        let hudWindow = UIWindow()
+//        hudWindow.frame = UIScreen.main.bounds
+//        hudWindow.isHidden = false
+//        hudWindow.windowLevel = UIWindow.Level.normal
+//        hudWindow.backgroundColor = UIColor.clear
+//        let controller = MKProgressViewController()
+//        hudWindow.rootViewController = controller
+//        return hudWindow
+//    }
+    
     fileprivate func getHUDWindow() -> UIWindow {
         let hudWindow = UIWindow()
+             
+        if #available(iOS 13.0, *) {
+            let windowScene = UIApplication.shared
+                .connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first
+            
+            if let windowScene = windowScene as? UIWindowScene {
+                hudWindow.windowScene = windowScene
+            }
+        }
+        
         hudWindow.frame = UIScreen.main.bounds
         hudWindow.isHidden = false
         hudWindow.windowLevel = UIWindow.Level.normal
         hudWindow.backgroundColor = UIColor.clear
+        
         let controller = MKProgressViewController()
         hudWindow.rootViewController = controller
+        
         return hudWindow
     }
     
